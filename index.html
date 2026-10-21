@@ -15,16 +15,25 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sobre azul con cinta de satén y sello de cera dorado">
+<meta property="og:image:alt" content="Sobre azul con cinta de satén, sello de cera dorado y un osito con corona">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 34'%3E%3Cg fill='%23b8914f'%3E%3Cpath d='M6 27 3.5 10 14 18.5 24 6l10 12.5L44.5 10 42 27z'/%3E%3Crect x='6' y='28.5' width='36' height='3.4' rx='1'/%3E%3Ccircle cx='3.5' cy='8.2' r='2.4'/%3E%3Ccircle cx='24' cy='4' r='2.6'/%3E%3Ccircle cx='44.5' cy='8.2' r='2.4'/%3E%3C/g%3E%3C/svg%3E">
 
 <script>
 /* ==================================================================
-   ENLACE DE LA LISTA DE REGALOS DE AMAZON
-   Para cambiarlo, sustituye SOLO el texto que hay entre las comillas.
+   DATOS QUE SE PUEDEN CAMBIAR
+   Sustituye SOLO el texto que hay entre las comillas.
    ================================================================== */
+
+/* Lista de regalos de Amazon */
 const ENLACE_LISTA_DE_REGALOS = "https://www.amazon.es/baby-reg/alejandra-herrera-january-2027-palma/2YFADDRHTYCQ5?ref_=cm_sw_r_apin_dp_ZF446Q4MGKET7A3CC0WZ&language=en-US";
+
+/* Enlace de Google Maps del lugar. Vacío = no se muestra el botón «Cómo llegar». */
+const ENLACE_UBICACION = "";
+
+/* Teléfono para confirmar por WhatsApp, con prefijo y sin espacios ni «+» (ejemplo: 34600111222).
+   Vacío = no se muestra la sección «Confirma tu asistencia». */
+const TELEFONO_CONFIRMACION = "";
 </script>
 
 <link rel="preload" href="fuentes/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
@@ -49,18 +58,19 @@ const ENLACE_LISTA_DE_REGALOS = "https://www.amazon.es/baby-reg/alejandra-herrer
   --tinta-suave: #52627c;
   --oro: #c3a062;
   --oro-oscuro: #8f6c36;
+  --oro-titulo: #a17d45;
   --papel: #fcfaf5;
   --sobre: #adbfd1;
   --sobre-claro: #c0cfdd;
   --sobre-oscuro: #96abc0;
-  --forro: #23355a;
 
   /* Todo se mide a partir del ancho de la tarjeta, así nada se corta en ninguna pantalla */
-  --w: max(260px, min(84vw, 380px, calc((100vh - 150px) / .89)));
+  --w: max(250px, min(76vw, 350px, calc((100vh - 48px) / 1.78)));
   --h: calc(var(--w) * 1.68);
   --ew: calc(var(--w) * 1.1);
   --eh: calc(var(--ew) * .809);
-  --arriba-sobre: calc((var(--h) - var(--eh)) / 2);
+  --arriba-sobre: calc(var(--h) - var(--eh) - var(--w) * .21);
+  --oso: calc(var(--ew) * .37);
 
   --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
   --caligrafia: "Pinyon Script", "Snell Roundhand", Georgia, serif;
@@ -68,12 +78,14 @@ const ENLACE_LISTA_DE_REGALOS = "https://www.amazon.es/baby-reg/alejandra-herrer
   --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .28 0 0 0 0 .22 .14 0 0 0 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
   --estrellas-forro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='%23dcc28a'%3E%3Cpath d='M14 6Q15 13 22 14 15 15 14 22 13 15 6 14 13 13 14 6Z'/%3E%3Cpath d='M48 39Q48.6 43.4 53 44 48.6 44.6 48 49 47.4 44.6 43 44 47.4 43.4 48 39Z' fill-opacity='.8'/%3E%3Ccircle cx='44' cy='17' r='1'/%3E%3Ccircle cx='29' cy='38' r='.8' fill-opacity='.7'/%3E%3Ccircle cx='8' cy='52' r='.9' fill-opacity='.8'/%3E%3Ccircle cx='58' cy='6' r='.6' fill-opacity='.6'/%3E%3Ccircle cx='24' cy='58' r='.6' fill-opacity='.6'/%3E%3C/g%3E%3C/svg%3E");
   --estrella: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23c6a464' d='M10 0Q11 9 20 10 11 11 10 20 9 11 0 10 9 9 10 0Z'/%3E%3C/svg%3E");
+  --toile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%237d97b3' stroke-width='1' stroke-linecap='round' stroke-linejoin='round' opacity='.32'%3E%3Cpath d='M14 30l-2-10 6 5 5-8 5 8 6-5-2 10z'/%3E%3Cpath d='M80 22c0-5 6-7 9-3 2-4 9-3 9 2 4 0 5 6 0 6H81c-3 0-4-4-1-5z'/%3E%3Cpath d='M60 70q1 6 7 7-6 1-7 7-1-6-7-7 6-1 7-7z'/%3E%3Cpath d='M22 92c0-4 5-6 8-3 2-3 8-2 8 2 3 0 4 5 0 5H23c-3 0-3-3-1-4z'/%3E%3Cpath d='M96 96q.7 4 4.5 4.5-3.8.5-4.5 4.5-.7-4-4.5-4.5 3.8-.5 4.5-4.5z'/%3E%3C/g%3E%3Cg fill='%23c3a062' opacity='.45'%3E%3Ccircle cx='44' cy='50' r='1.1'/%3E%3Ccircle cx='104' cy='60' r='.9'/%3E%3Ccircle cx='8' cy='70' r='.8'/%3E%3Ccircle cx='70' cy='110' r='1'/%3E%3C/g%3E%3C/svg%3E");
 }
 @supports (height: 100svh) {
-  :root { --w: max(260px, min(84vw, 380px, calc((100svh - 150px) / .89))); }
+  :root { --w: max(250px, min(76vw, 350px, calc((100svh - 48px) / 1.78))); }
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   min-height: 100vh;
@@ -116,7 +128,7 @@ body {
 
 /* ---------- Carga ---------- */
 .cargador {
-  position: fixed; inset: 0; z-index: 20;
+  position: fixed; inset: 0; z-index: 40;
   display: grid; place-content: center; justify-items: center; gap: 14px;
   font-style: italic; font-size: 18px; color: var(--tinta-suave);
   transition: opacity .6s ease, visibility .6s;
@@ -127,10 +139,11 @@ body:not(.cargando) .cargador { opacity: 0; visibility: hidden; }
 
 /* ---------- Escena ---------- */
 .escena {
+  position: relative;
   min-height: 100vh;
   min-height: 100svh;
   display: flex; align-items: center; justify-content: center;
-  padding: clamp(20px, 5vh, 48px) 16px;
+  padding: max(24px, calc(var(--w) * .08)) 16px 24px;
 }
 body.cargando .escena { visibility: hidden; }
 .mesa { position: relative; flex: none; width: var(--ew); height: var(--h); }
@@ -140,6 +153,56 @@ body.cargando .escena { visibility: hidden; }
   .reacciona:has(.abrir:hover) { transform: translateY(-6px); }
 }
 .reacciona:has(.abrir:active) { transform: translateY(-2px) scale(.985); transition-duration: .15s; }
+
+/* Portada en arco */
+.arco {
+  position: absolute; z-index: 0;
+  left: calc((var(--ew) - var(--w) * 1.16) / 2); width: calc(var(--w) * 1.16);
+  top: calc(var(--w) * -.06); height: calc(var(--h) + var(--w) * .1);
+  border-radius: calc(var(--w) * .58) calc(var(--w) * .58) 14px 14px;
+  background-color: var(--papel);
+  background-image:
+    var(--grano),
+    radial-gradient(70% 40% at 50% 100%, rgba(167, 189, 210, .28), rgba(167, 189, 210, 0) 75%),
+    var(--toile);
+  background-size: auto, auto, 120px 120px;
+  box-shadow: 0 20px 44px rgba(30, 44, 72, .16), 0 2px 6px rgba(30, 44, 72, .08);
+}
+.arco::before, .arco::after {
+  content: ""; position: absolute; pointer-events: none;
+  border: 1px solid rgba(186, 150, 88, .6);
+}
+.arco::before { inset: 9px; border-radius: calc(var(--w) * .58 - 9px) calc(var(--w) * .58 - 9px) 8px 8px; }
+.arco::after { inset: 14px; border-color: rgba(186, 150, 88, .3); border-radius: calc(var(--w) * .58 - 14px) calc(var(--w) * .58 - 14px) 5px 5px; }
+
+.portada-titulo {
+  position: absolute; z-index: 1; left: 0; right: 0;
+  top: calc(var(--w) * .025);
+  text-align: center; pointer-events: none;
+}
+.portada-titulo .antes {
+  display: block;
+  font-weight: 600; font-size: calc(var(--w) * .043);
+  letter-spacing: .34em; margin-right: -.34em;
+  color: var(--tinta);
+}
+.portada-titulo .nombre-caligrafia {
+  display: block;
+  font-family: var(--caligrafia);
+  font-size: calc(var(--w) * .2);
+  line-height: 1.12;
+  padding: 0 .1em;
+}
+
+.oso {
+  position: absolute; z-index: 0;
+  width: var(--oso); height: calc(var(--oso) * .9);
+  left: calc(50% - var(--oso) / 2);
+  top: calc(var(--arriba-sobre) - var(--oso) * .86);
+  transform-origin: 50% 100%;
+  animation: saluda 5.5s ease-in-out infinite;
+}
+@keyframes saluda { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-2.5deg); } 60% { transform: rotate(1.5deg) translateY(-1px); } }
 
 /* ---------- Sobre ---------- */
 .sombra-sobre, .sobre-fondo, .bolsillo, .solapa {
@@ -215,10 +278,7 @@ body.cargando .escena { visibility: hidden; }
 }
 .cinta-izq { left: 0; border-radius: 2px 0 0 2px; }
 .cinta-der { right: 0; border-radius: 0 2px 2px 0; }
-.cinta::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(60, 70, 90, .28), rgba(60, 70, 90, 0) 6%, rgba(60, 70, 90, 0) 94%, rgba(60, 70, 90, .28));
-}
+.cinta::after { content: ""; position: absolute; inset: 0; }
 .cinta-izq::after { background: linear-gradient(90deg, rgba(60, 70, 90, .3), rgba(60, 70, 90, 0) 8%); }
 .cinta-der::after { background: linear-gradient(270deg, rgba(60, 70, 90, .3), rgba(60, 70, 90, 0) 8%); }
 
@@ -234,24 +294,25 @@ body.cargando .escena { visibility: hidden; }
 
 .abrir {
   position: absolute; z-index: 7; left: 0; width: var(--ew);
-  top: var(--arriba-sobre); height: calc(var(--eh) + 84px);
+  top: calc(var(--arriba-sobre) - var(--oso) * .5);
+  height: calc(var(--eh) + var(--oso) * .5 + var(--w) * .21);
   border: 0; padding: 0; background: transparent; cursor: pointer;
   border-radius: 8px; touch-action: manipulation;
 }
 .abrir:focus-visible { outline: 3px solid var(--oro); outline-offset: 8px; }
 
 .pista {
-  position: absolute; left: -16px; right: -16px;
-  top: calc(var(--arriba-sobre) + var(--eh) + 30px);
+  position: absolute; left: 0; right: 0; z-index: 1;
+  top: calc(var(--arriba-sobre) + var(--eh) + 10px);
   text-align: center; font-style: italic; font-weight: 500;
-  font-size: clamp(19px, 4.8vw, 22px); letter-spacing: .01em;
+  font-size: clamp(18px, 4.6vw, 21px); letter-spacing: .01em;
   color: var(--tinta);
   pointer-events: none;
   animation: respira 3.4s ease-in-out infinite;
   transition: opacity .5s ease;
 }
 .pista::before {
-  content: ""; display: block; width: 14px; height: 14px; margin: 0 auto 8px;
+  content: ""; display: block; width: 13px; height: 13px; margin: 0 auto 6px;
   background: var(--estrella) center / contain no-repeat;
 }
 @keyframes respira { 0%, 100% { opacity: .7; } 50% { opacity: 1; } }
@@ -264,7 +325,7 @@ body.cargando .escena { visibility: hidden; }
   left: calc((var(--ew) - var(--w)) / 2);
   width: var(--w); height: var(--h);
   perspective: calc(var(--w) * 3.4);
-  transform: translateY(-25%);
+  transform: translateY(calc(var(--arriba-sobre) + var(--eh) / 2 - var(--h) * .75));
   outline: none;
 }
 .tarjeta-sombra {
@@ -364,6 +425,9 @@ body.cargando .escena { visibility: hidden; }
   color: transparent; -webkit-text-fill-color: transparent;
   text-shadow: none;
 }
+.nombre-caligrafia.oro-texto, .firma.oro-texto {
+  background-image: linear-gradient(100deg, #7a5829 0%, #a8834a 30%, #d4b67a 48%, #a8834a 64%, #7a5829 100%);
+}
 .nombre {
   font-weight: 600;
   font-size: calc(var(--w) * .205);
@@ -405,81 +469,170 @@ body.cargando .escena { visibility: hidden; }
 }
 .portada .adorno { width: calc(var(--w) * .2); margin: calc(var(--w) * .045) 0 0; }
 
-/* ---------- Lista de regalos ---------- */
-.regalos {
-  position: absolute; left: 0; right: 0; margin-inline: auto;
-  top: calc(100% + 34px);
-  width: min(calc(var(--w) * .96), 360px);
-  display: flex; flex-direction: column; align-items: center; gap: 18px;
-  padding-bottom: 56px;
-  visibility: hidden;
+/* ---------- Aviso para seguir bajando ---------- */
+.desliza {
+  position: absolute; left: 0; right: 0; bottom: calc(8px + env(safe-area-inset-bottom));
+  display: none; flex-direction: column; align-items: center; gap: 2px;
+  font-style: italic; font-weight: 500; font-size: 16px; color: var(--tinta-suave);
+  pointer-events: none;
+  transition: opacity .5s ease;
 }
-.etiqueta-sombra { width: 100%; filter: drop-shadow(0 10px 18px rgba(30, 44, 72, .22)) drop-shadow(0 1px 2px rgba(30, 44, 72, .16)); }
-.etiqueta {
+.desliza svg { width: 18px; height: 18px; animation: baja 2.4s ease-in-out infinite; }
+@keyframes baja { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.abierta .desliza { display: flex; }
+.ya-bajo .desliza { opacity: 0; }
+
+/* ---------- Pliego con las secciones ---------- */
+.continuacion { display: none; padding: 4px 16px calc(96px + env(safe-area-inset-bottom)); }
+.abierta .continuacion { display: block; }
+.pliego {
   position: relative;
-  padding: 58px 24px 26px;
+  max-width: 440px; margin: 0 auto;
+  padding: 54px 26px 46px;
   text-align: center;
   background-color: var(--papel);
-  background-image: var(--grano), radial-gradient(70% 50% at 50% 0%, rgba(167, 189, 210, .28), rgba(167, 189, 210, 0) 72%);
-  clip-path: polygon(16% 0, 84% 0, 100% 13%, 100% 100%, 0 100%, 0 13%);
+  background-image:
+    var(--grano),
+    radial-gradient(60% 18% at 0% 0%, rgba(167, 189, 210, .3), rgba(167, 189, 210, 0) 75%),
+    radial-gradient(60% 16% at 100% 100%, rgba(167, 189, 210, .3), rgba(167, 189, 210, 0) 75%);
+  border-radius: 4px;
+  box-shadow: 0 20px 44px rgba(30, 44, 72, .16), 0 2px 6px rgba(30, 44, 72, .08);
 }
-.etiqueta::before {
-  content: ""; position: absolute; inset: 9px; pointer-events: none;
-  border: 1px solid rgba(186, 150, 88, .45);
-  clip-path: polygon(15.5% 0, 84.5% 0, 100% 12.5%, 100% 100%, 0 100%, 0 12.5%);
+.pliego::before, .pliego::after {
+  content: ""; position: absolute; pointer-events: none;
+  border: 1px solid rgba(186, 150, 88, .6);
 }
-.ojal {
-  position: absolute; left: calc(50% - 9px); top: 18px;
-  width: 18px; height: 18px; border-radius: 50%;
-  background: #d9e3ec;
-  box-shadow: 0 0 0 3px #c8a868, inset 0 2px 3px rgba(30, 44, 72, .35);
+.pliego::before { inset: 12px; }
+.pliego::after { inset: 17px; border-color: rgba(186, 150, 88, .3); }
+
+.seccion { position: relative; z-index: 1; }
+.separador { display: block; width: 110px; height: 12px; margin: 34px auto; }
+.ilustracion { display: block; margin: 0 auto 6px; height: auto; }
+.titulo-seccion {
+  font-family: var(--caligrafia); font-weight: 400;
+  font-size: clamp(36px, 10.5vw, 46px); line-height: 1.15;
+  color: var(--oro-titulo);
+  padding: 0 .1em;
 }
-.lazo-etiqueta { position: absolute; left: calc(50% - 30px); top: -40px; width: 60px; height: 70px; z-index: 1; pointer-events: none; }
-.etiqueta p {
-  font-style: italic; font-weight: 500;
-  font-size: clamp(18px, 4.8vw, 20px); line-height: 1.42;
-  max-width: 20em; margin: 0 auto 20px;
+.texto-seccion {
+  font-weight: 500;
+  font-size: clamp(18px, 4.9vw, 20px); line-height: 1.45;
+  max-width: 21em; margin: 10px auto 0;
 }
-.boton-regalos {
+.texto-seccion.cursiva { font-style: italic; }
+
+.calendario { max-width: 300px; margin: 16px auto 4px; }
+.mes, .anio { font-weight: 600; font-size: 17px; letter-spacing: .32em; margin-right: -.32em; }
+.fila-fecha {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px;
+  margin: 8px 0 6px;
+}
+.fila-fecha .lado {
+  padding: 8px 0;
+  border-top: 1px solid rgba(186, 150, 88, .7); border-bottom: 1px solid rgba(186, 150, 88, .7);
+  font-weight: 600; font-size: 16px; letter-spacing: .12em;
+}
+.fila-fecha .semana { text-transform: uppercase; }
+.fila-fecha .dia { font-weight: 600; font-size: 70px; line-height: .9; padding: 0 .04em; }
+
+.cuenta {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  max-width: 330px; margin: 22px auto 0;
+}
+.cuenta > div {
+  padding: 11px 0 9px;
+  border: 1px solid rgba(186, 150, 88, .5); border-radius: 10px;
+  background: rgba(255, 255, 255, .6);
+}
+.cuenta .num {
+  display: block;
+  font-weight: 600; font-size: clamp(27px, 7.6vw, 33px); line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.cuenta .etq { display: block; margin-top: 4px; font-style: italic; font-weight: 500; font-size: 15px; color: var(--tinta-suave); }
+.gran-dia { margin-top: 18px; font-family: var(--caligrafia); font-size: 34px; color: var(--oro-titulo); }
+
+.acciones { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 22px; }
+.boton {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 54px; padding: 12px 22px; white-space: nowrap;
+  min-height: 54px; padding: 12px 24px; white-space: nowrap;
   border-radius: 999px;
   border: 1px solid rgba(220, 190, 128, .75);
   background: linear-gradient(180deg, #34496f 0%, #24365a 100%);
   color: #fbf5e7;
   font-family: var(--serif); font-weight: 600; font-size: 19px; letter-spacing: .02em; line-height: 1.15;
-  text-decoration: none;
+  text-decoration: none; cursor: pointer;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 8px 18px rgba(30, 44, 72, .28);
   transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
   touch-action: manipulation;
 }
-.boton-regalos svg { width: 20px; height: 20px; flex: none; }
-@media (hover: hover) {
-  .boton-regalos:hover { transform: translateY(-1px); background: linear-gradient(180deg, #3b5279 0%, #293d63 100%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 10px 22px rgba(30, 44, 72, .32); }
+.boton svg { width: 20px; height: 20px; flex: none; }
+.boton-claro {
+  background: rgba(255, 255, 255, .55);
+  color: var(--tinta);
+  border-color: rgba(38, 56, 90, .45);
+  box-shadow: 0 4px 12px rgba(30, 44, 72, .1);
 }
-.boton-regalos:active { transform: translateY(1px); }
-.boton-regalos:focus-visible { outline: 3px solid var(--oro); outline-offset: 4px; }
-.nota { display: block; margin-top: 12px; font-size: 15px; font-style: italic; color: var(--tinta-suave); }
+@media (hover: hover) {
+  .boton:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 10px 22px rgba(30, 44, 72, .32); }
+  .boton-claro:hover { background: #fff; }
+}
+.boton:active { transform: translateY(1px); }
+.boton:focus-visible { outline: 3px solid var(--oro); outline-offset: 4px; }
+.nota { display: block; font-size: 15px; font-style: italic; color: var(--tinta-suave); }
 .repetir {
-  min-height: 44px; padding: 8px 14px;
+  min-height: 44px; margin-top: 14px; padding: 8px 14px;
   border: 0; background: none; cursor: pointer;
   font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 17px;
   color: var(--tinta-suave);
   text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(82, 98, 124, .45);
 }
 .repetir:focus-visible { outline: 2px solid var(--oro); outline-offset: 2px; border-radius: 4px; }
+.firma { font-family: var(--caligrafia); font-size: 54px; line-height: 1.1; margin-top: 4px; padding: 0 .1em; }
+
+.flota-suave { animation: flota-suave 6s ease-in-out infinite; }
+@keyframes flota-suave { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-7px) rotate(1deg); } }
+
+/* Aparición suave al bajar */
+.revelar { opacity: 0; transform: translateY(16px); transition: opacity .9s ease, transform .9s cubic-bezier(.3, .7, .3, 1); }
+.revelar.visible { opacity: 1; transform: none; }
+
+/* ---------- Botón de música ---------- */
+.musica {
+  position: fixed; z-index: 30;
+  right: 16px; bottom: calc(16px + env(safe-area-inset-bottom));
+  width: 50px; height: 50px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid rgba(186, 150, 88, .75);
+  background: rgba(252, 250, 245, .92);
+  color: var(--tinta);
+  box-shadow: 0 6px 16px rgba(30, 44, 72, .2);
+  cursor: pointer; touch-action: manipulation;
+  transition: transform .25s ease;
+}
+.cargando .musica { visibility: hidden; }
+.musica:focus-visible { outline: 3px solid var(--oro); outline-offset: 3px; }
+.musica svg { width: 22px; height: 22px; }
+.musica .ondas { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+.musica .ondas i { display: block; width: 3px; border-radius: 2px; background: var(--tinta); animation: onda 1.1s ease-in-out infinite; }
+.musica .ondas i:nth-child(2) { animation-delay: -.4s; }
+.musica .ondas i:nth-child(3) { animation-delay: -.8s; }
+@keyframes onda { 0%, 100% { height: 5px; } 50% { height: 17px; } }
+.musica[aria-pressed="true"] svg { display: none; }
+.musica[aria-pressed="true"] .ondas { display: flex; }
 
 /* ---------- Estado final: la invitación abierta ---------- */
 .abierta .sombra-sobre, .abierta .sobre-fondo, .abierta .bolsillo, .abierta .solapa,
-.abierta .cinta, .abierta .sello, .abierta .abrir, .abierta .pista { display: none; }
+.abierta .cinta, .abierta .sello, .abierta .abrir, .abierta .pista,
+.abierta .arco, .abierta .portada-titulo, .abierta .oso { display: none; }
 .abierta .tarjeta { transform: none; }
 .abierta .panel-superior { transform: none; }
 .abierta .tarjeta-sombra { transform: none; opacity: .5; }
-.abierta .regalos { visibility: visible; }
 
 @media (prefers-reduced-motion: reduce) {
-  .nube, .estrella, .pista, .cargador svg { animation: none !important; }
+  .nube, .estrella, .pista, .cargador svg, .oso, .desliza svg, .flota-suave, .musica .ondas i { animation: none !important; }
   .reacciona { transition: none; }
+  .revelar { opacity: 1; transform: none; transition: none; }
 }
 </style>
 </head>
@@ -493,6 +646,25 @@ body.cargando .escena { visibility: hidden; }
       <stop offset=".45" stop-color="#c29d5c"/>
       <stop offset="1" stop-color="#8d6a34"/>
     </linearGradient>
+    <radialGradient id="pelo" cx="42%" cy="35%" r="75%">
+      <stop offset="0" stop-color="#eed9b5"/><stop offset=".65" stop-color="#dcbd8f"/><stop offset="1" stop-color="#c79f6e"/>
+    </radialGradient>
+    <radialGradient id="hocico" cx="50%" cy="40%" r="65%">
+      <stop offset="0" stop-color="#fdf7ec"/><stop offset="1" stop-color="#eddcc1"/>
+    </radialGradient>
+    <radialGradient id="azul-acuarela" cx="38%" cy="32%" r="80%">
+      <stop offset="0" stop-color="#dbe5ee"/><stop offset=".6" stop-color="#b3c6d8"/><stop offset="1" stop-color="#93abc2"/>
+    </radialGradient>
+    <radialGradient id="marfil-acuarela" cx="40%" cy="35%" r="80%">
+      <stop offset="0" stop-color="#fffdf8"/><stop offset=".7" stop-color="#f3ead9"/><stop offset="1" stop-color="#e2d2b6"/>
+    </radialGradient>
+    <linearGradient id="tejado" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c3d2e0"/><stop offset="1" stop-color="#8ea7bf"/>
+    </linearGradient>
+    <filter id="acuarela" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="4" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
     <filter id="grano-sobre" x="0" y="0" width="100%" height="100%">
       <feTurbulence type="fractalNoise" baseFrequency=".32" numOctaves="2" stitchTiles="stitch" result="ruido"/>
       <feColorMatrix in="ruido" type="matrix" values="0 0 0 0 .2  0 0 0 0 .24  0 0 0 0 .3  .16 0 0 0 0" result="motas"/>
@@ -512,19 +684,42 @@ body.cargando .escena { visibility: hidden; }
       <path d="M60 0Q60.7 5.3 66 6 60.7 6.7 60 12 59.3 6.7 54 6 59.3 5.3 60 0Z" fill="#c3a062"/>
       <circle cx="51" cy="6" r="1" fill="#c3a062"/><circle cx="69" cy="6" r="1" fill="#c3a062"/>
     </symbol>
+    <symbol id="destello" viewBox="0 0 20 20">
+      <path d="M10 0Q11 9 20 10 11 11 10 20 9 11 0 10 9 9 10 0Z"/>
+    </symbol>
+    <!-- Cara del osito, con su coronita -->
+    <symbol id="cara-oso" viewBox="0 0 140 130">
+      <g stroke="#9a774f" stroke-opacity=".55" stroke-width="1.2">
+        <circle cx="30" cy="36" r="19" fill="url(#pelo)"/>
+        <circle cx="110" cy="36" r="19" fill="url(#pelo)"/>
+        <circle cx="31" cy="38" r="10.5" fill="#f2dcc2" stroke="none"/>
+        <circle cx="109" cy="38" r="10.5" fill="#f2dcc2" stroke="none"/>
+        <ellipse cx="70" cy="74" rx="52" ry="47" fill="url(#pelo)"/>
+        <ellipse cx="70" cy="91" rx="22" ry="16" fill="url(#hocico)" stroke-opacity=".3"/>
+      </g>
+      <path d="M63 83.5Q70 79 77 83.5 74 90 70 90 66 90 63 83.5Z" fill="#6b4a32"/>
+      <path d="M70 90v5M70 95q-5 5-10 2M70 95q5 5 10 2" fill="none" stroke="#6b4a32" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="52" cy="70" rx="4" ry="4.8" fill="#3e2c22"/>
+      <ellipse cx="88" cy="70" rx="4" ry="4.8" fill="#3e2c22"/>
+      <circle cx="53.4" cy="68.4" r="1.4" fill="#fff"/>
+      <circle cx="89.4" cy="68.4" r="1.4" fill="#fff"/>
+      <ellipse cx="39" cy="86" rx="8.5" ry="5" fill="#e8a49b" opacity=".35"/>
+      <ellipse cx="101" cy="86" rx="8.5" ry="5" fill="#e8a49b" opacity=".35"/>
+      <g transform="rotate(-9 70 18)"><use href="#corona" x="50" y="3" width="40" height="28" fill="url(#oro-corona)"/></g>
+    </symbol>
   </defs>
 </svg>
 
 <div class="cielo" aria-hidden="true">
   <span class="nube n1"></span><span class="nube n2"></span><span class="nube n3"></span>
-  <span class="estrella" style="left:9%;top:12%;--s:13px;--t:7s"></span>
-  <span class="estrella" style="left:84%;top:9%;--s:10px;--t:9s;--d:-3s"></span>
-  <span class="estrella" style="left:91%;top:31%;--s:7px;--t:6s;--d:-1s"></span>
-  <span class="estrella" style="left:5%;top:44%;--s:8px;--t:8s;--d:-5s"></span>
-  <span class="estrella" style="left:16%;top:78%;--s:11px;--t:10s;--d:-2s"></span>
-  <span class="estrella" style="left:88%;top:72%;--s:12px;--t:7.5s;--d:-6s"></span>
-  <span class="estrella" style="left:72%;top:92%;--s:7px;--t:6.5s;--d:-4s"></span>
-  <span class="estrella" style="left:30%;top:5%;--s:7px;--t:8.5s;--d:-7s"></span>
+  <span class="estrella" style="left:6%;top:10%;--s:13px;--t:7s"></span>
+  <span class="estrella" style="left:88%;top:8%;--s:10px;--t:9s;--d:-3s"></span>
+  <span class="estrella" style="left:93%;top:34%;--s:7px;--t:6s;--d:-1s"></span>
+  <span class="estrella" style="left:3%;top:46%;--s:8px;--t:8s;--d:-5s"></span>
+  <span class="estrella" style="left:8%;top:82%;--s:11px;--t:10s;--d:-2s"></span>
+  <span class="estrella" style="left:91%;top:74%;--s:12px;--t:7.5s;--d:-6s"></span>
+  <span class="estrella" style="left:74%;top:95%;--s:7px;--t:6.5s;--d:-4s"></span>
+  <span class="estrella" style="left:28%;top:3%;--s:7px;--t:8.5s;--d:-7s"></span>
 </div>
 
 <div class="cargador" role="status">
@@ -534,8 +729,26 @@ body.cargando .escena { visibility: hidden; }
 
 <main class="escena">
   <div class="mesa">
+    <div class="arco" aria-hidden="true"></div>
+    <div class="portada-titulo" aria-hidden="true">
+      <span class="antes">BABY SHOWER</span>
+      <span class="nombre-caligrafia oro-texto">Kael</span>
+    </div>
+
     <div class="flota">
       <div class="reacciona">
+
+        <svg class="oso" viewBox="0 0 200 180" aria-hidden="true">
+          <g filter="url(#acuarela)">
+            <path d="M34 184C36 142 66 126 100 126s64 16 66 58Z" fill="url(#pelo)" stroke="#9a774f" stroke-opacity=".55" stroke-width="1.2"/>
+            <use href="#cara-oso" x="30" y="8" width="140" height="130"/>
+            <g fill="url(#pelo)" stroke="#9a774f" stroke-opacity=".55" stroke-width="1.2">
+              <ellipse cx="64" cy="161" rx="22" ry="13"/>
+              <ellipse cx="136" cy="161" rx="22" ry="13"/>
+            </g>
+            <path d="M56 156v5M64 154.5v6M72 156v5M128 156v5M136 154.5v6M144 156v5" stroke="#9a774f" stroke-opacity=".45" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+        </svg>
 
         <div class="sombra-sobre pieza-sobre" aria-hidden="true"></div>
         <div class="sobre-fondo pieza-sobre" aria-hidden="true"><div class="forro"></div></div>
@@ -647,30 +860,189 @@ body.cargando .escena { visibility: hidden; }
     </div>
 
     <p class="pista" aria-hidden="true">Toca para abrir tu invitación</p>
+  </div>
 
-    <section class="regalos" aria-label="Lista de regalos">
-      <div class="etiqueta-sombra">
-        <div class="etiqueta">
-          <span class="ojal" aria-hidden="true"></span>
-          <p>Si deseas tener un detalle con Kael, aquí encontrarás nuestra lista de regalos.</p>
-          <a id="lista-regalos" class="boton-regalos" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#e3c98f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3.5" y="9" width="17" height="11.5" rx="1.2"/><path d="M2.5 9h19M12 9v11.5"/>
-              <path d="M12 9c-1.6-3.4-5.6-4.4-5.6-1.9C6.4 8.6 9.6 9 12 9zm0 0c1.6-3.4 5.6-4.4 5.6-1.9 0 1.5-3.2 1.9-5.6 1.9z"/>
-            </svg>
-            Nuestra lista de regalos
-          </a>
-          <span class="nota">Se abre Amazon en una pestaña nueva.</span>
-        </div>
-      </div>
-      <svg class="lazo-etiqueta" viewBox="0 0 60 70" aria-hidden="true">
-        <path d="M30 60C24 46 18 30 22 14 25 3 35 3 38 14 42 30 36 46 30 60Z" fill="none" stroke="#efe7d8" stroke-width="5" stroke-linecap="round"/>
-        <path d="M30 60C24 46 18 30 22 14 25 3 35 3 38 14 42 30 36 46 30 60Z" fill="none" stroke="#c9bba4" stroke-width="1" stroke-opacity=".7" stroke-linecap="round"/>
+  <p class="desliza" aria-hidden="true">
+    Desliza para ver más
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </p>
+</main>
+
+<div class="continuacion">
+  <div class="pliego">
+
+    <section class="seccion revelar" aria-labelledby="t-fecha">
+      <svg class="ilustracion flota-suave" viewBox="0 0 200 230" style="width:min(44%,170px)" aria-hidden="true">
+        <g filter="url(#acuarela)">
+          <g fill="#fff" stroke="#9fb3c7" stroke-opacity=".55" stroke-width="1">
+            <path d="M12 168c0-9 11-13 18-7 4-9 18-9 21 1 9-1 13 9 5 13H17c-6 0-8-4-5-7z"/>
+            <path d="M150 120c0-8 10-11 16-6 3-8 16-7 18 1 8 0 11 8 4 11h-34c-5 0-7-4-4-6z"/>
+          </g>
+          <path d="M100 12C150 12 178 48 176 88c-2 34-30 58-52 80H76C54 146 26 122 24 88 22 48 50 12 100 12Z" fill="url(#azul-acuarela)" stroke="#7f98b1" stroke-opacity=".6" stroke-width="1.2"/>
+          <path d="M100 12C66 28 52 110 76 168h12C72 112 78 36 100 12Z" fill="url(#marfil-acuarela)"/>
+          <path d="M100 12c34 16 48 98 24 156h-12c16-56 10-132-12-156Z" fill="url(#marfil-acuarela)"/>
+          <path d="M100 12v156" stroke="#7f98b1" stroke-opacity=".5" stroke-width="1"/>
+          <path d="M44 138c36 12 76 12 112 0l-6 8c-32 10-68 10-100 0Z" fill="url(#oro-corona)" opacity=".9"/>
+          <path d="M78 168l9 24M122 168l-9 24M95 168l1 24M105 168l-1 24" stroke="#9a774f" stroke-opacity=".7" stroke-width="1"/>
+          <path d="M83 190h34l-3 22a4 4 0 0 1-4 3H90a4 4 0 0 1-4-3Z" fill="url(#pelo)" stroke="#9a774f" stroke-opacity=".6" stroke-width="1.1"/>
+          <path d="M86 197h28M87 204h26M95 191v23M105 191v23" stroke="#9a774f" stroke-opacity=".35" stroke-width=".9"/>
+          <rect x="80" y="187" width="40" height="5" rx="2" fill="#c49c6a"/>
+          <g transform="translate(91 23)"><use href="#corona" width="18" height="13" fill="url(#oro-corona)"/></g>
+        </g>
+        <g fill="#c6a464">
+          <use href="#destello" x="28" y="30" width="10" height="10"/>
+          <use href="#destello" x="168" y="18" width="12" height="12"/>
+          <use href="#destello" x="172" y="190" width="8" height="8"/>
+        </g>
       </svg>
+      <h2 id="t-fecha" class="titulo-seccion">Guarda la fecha</h2>
+      <div class="calendario">
+        <p class="mes">NOVIEMBRE</p>
+        <div class="fila-fecha">
+          <span class="lado semana">Sábado</span>
+          <span class="dia oro-texto">7</span>
+          <span class="lado">18:00&nbsp;h</span>
+        </div>
+        <p class="anio">2026</p>
+      </div>
+      <p class="texto-seccion cursiva" id="faltan">Faltan</p>
+      <div class="cuenta" role="timer" aria-labelledby="faltan">
+        <div><span class="num" id="c-dias">00</span><span class="etq">días</span></div>
+        <div><span class="num" id="c-horas">00</span><span class="etq">horas</span></div>
+        <div><span class="num" id="c-min">00</span><span class="etq">minutos</span></div>
+        <div><span class="num" id="c-seg">00</span><span class="etq">segundos</span></div>
+      </div>
+      <p class="gran-dia" hidden>¡Ya llegó el gran día!</p>
+      <div class="acciones">
+        <a id="guardar-calendario" class="boton boton-claro" href="baby-shower-kael.ics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a17d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 13.2q.4 2.2 2.6 2.6-2.2.4-2.6 2.6-.4-2.2-2.6-2.6 2.2-.4 2.6-2.6z" fill="#a17d45" stroke="none"/></svg>
+          Guardar en mi calendario
+        </a>
+      </div>
+    </section>
+
+    <svg class="separador" aria-hidden="true"><use href="#adorno"/></svg>
+
+    <section class="seccion revelar" aria-labelledby="t-lugar">
+      <svg class="ilustracion" viewBox="0 0 220 170" style="width:min(60%,230px)" aria-hidden="true">
+        <g filter="url(#acuarela)">
+          <g fill="#fff" stroke="#9fb3c7" stroke-opacity=".5" stroke-width="1">
+            <path d="M6 70c0-8 10-11 16-6 3-8 16-7 18 1 8 0 11 8 4 11H10c-5 0-7-4-4-6z"/>
+            <path d="M170 46c0-7 9-10 14-5 3-7 14-6 16 1 7 0 9 7 3 9h-30c-4 0-6-3-3-5z"/>
+          </g>
+          <path d="M0 170c30-34 70-30 110-30s82-6 110 24v6Z" fill="#d6e1e4" opacity=".9"/>
+          <rect x="60" y="88" width="100" height="66" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45" stroke-width="1"/>
+          <path d="M60 88v-8h10v8m10 0v-8h10v8m10 0v-8h10v8m10 0v-8h10v8m10 0v-8h10v8" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45" stroke-width="1"/>
+          <rect x="36" y="68" width="30" height="86" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45" stroke-width="1"/>
+          <rect x="154" y="68" width="30" height="86" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45" stroke-width="1"/>
+          <rect x="92" y="54" width="36" height="36" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45" stroke-width="1"/>
+          <path d="M32 70 51 24l19 46Z" fill="url(#tejado)" stroke="#7f98b1" stroke-opacity=".6"/>
+          <path d="M150 70 169 24l19 46Z" fill="url(#tejado)" stroke="#7f98b1" stroke-opacity=".6"/>
+          <path d="M88 56 110 10l22 46Z" fill="url(#tejado)" stroke="#7f98b1" stroke-opacity=".6"/>
+          <path d="M51 24V12M169 24V12M110 10V-2" stroke="#9a774f" stroke-width="1" stroke-opacity=".7"/>
+          <path d="M51 12l9 3-9 3ZM169 12l9 3-9 3ZM110 -2l10 3.5-10 3.5Z" fill="url(#oro-corona)"/>
+          <path d="M98 154v-20a12 12 0 0 1 24 0v20Z" fill="#9db2c6" stroke="#7f98b1" stroke-opacity=".6"/>
+          <g fill="#8ea7bf">
+            <path d="M45 100a6 6 0 0 1 12 0v12H45Z"/><path d="M163 100a6 6 0 0 1 12 0v12h-12Z"/>
+            <path d="M104 72a6 6 0 0 1 12 0v10h-12Z"/><path d="M72 112a5 5 0 0 1 10 0v10H72Z"/><path d="M138 112a5 5 0 0 1 10 0v10h-10Z"/>
+          </g>
+        </g>
+        <g fill="#c6a464"><use href="#destello" x="196" y="84" width="10" height="10"/><use href="#destello" x="14" y="104" width="8" height="8"/></g>
+      </svg>
+      <h2 id="t-lugar" class="titulo-seccion">El lugar</h2>
+      <p class="texto-seccion">Carrer de la Mare de Déu de Montserrat</p>
+      <p class="texto-seccion cursiva">Sábado, 7 de noviembre de 2026, a&nbsp;las&nbsp;18:00&nbsp;h</p>
+      <div class="acciones" id="bloque-ubicacion" hidden>
+        <a id="como-llegar" class="boton boton-claro" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a17d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+          Cómo llegar
+        </a>
+      </div>
+    </section>
+
+    <svg class="separador" aria-hidden="true"><use href="#adorno"/></svg>
+
+    <section class="seccion revelar" aria-labelledby="t-regalos">
+      <svg class="ilustracion" viewBox="0 0 180 170" style="width:min(40%,150px)" aria-hidden="true">
+        <g filter="url(#acuarela)">
+          <rect x="32" y="80" width="116" height="78" rx="4" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45"/>
+          <rect x="26" y="62" width="128" height="24" rx="4" fill="url(#marfil-acuarela)" stroke="#9a774f" stroke-opacity=".45"/>
+          <rect x="82" y="62" width="16" height="96" fill="url(#azul-acuarela)"/>
+          <rect x="32" y="108" width="116" height="13" fill="url(#azul-acuarela)" opacity=".9"/>
+          <path d="M90 62C66 26 44 46 60 60c8 7 22 4 30 2Z" fill="url(#azul-acuarela)" stroke="#7f98b1" stroke-opacity=".6"/>
+          <path d="M90 62c24-36 46-16 30-2-8 7-22 4-30 2Z" fill="url(#azul-acuarela)" stroke="#7f98b1" stroke-opacity=".6"/>
+          <path d="M86 64 70 96l9-3 5 8 4-35ZM94 64l16 32-9-3-5 8-4-35Z" fill="#a9bfd3" stroke="#7f98b1" stroke-opacity=".5"/>
+          <ellipse cx="90" cy="62" rx="8" ry="7" fill="#9fb6cc" stroke="#7f98b1" stroke-opacity=".6"/>
+        </g>
+        <g transform="translate(118 122)"><use href="#corona" width="20" height="14" fill="url(#oro-corona)"/></g>
+        <g fill="#c6a464"><use href="#destello" x="22" y="30" width="11" height="11"/><use href="#destello" x="150" y="26" width="9" height="9"/></g>
+      </svg>
+      <h2 id="t-regalos" class="titulo-seccion">Lista de regalos</h2>
+      <p class="texto-seccion cursiva">Si deseas tener un detalle con Kael, aquí encontrarás nuestra lista de regalos.</p>
+      <div class="acciones">
+        <a id="lista-regalos" class="boton" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e3c98f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3.5" y="9" width="17" height="11.5" rx="1.2"/><path d="M2.5 9h19M12 9v11.5"/>
+            <path d="M12 9c-1.6-3.4-5.6-4.4-5.6-1.9C6.4 8.6 9.6 9 12 9zm0 0c1.6-3.4 5.6-4.4 5.6-1.9 0 1.5-3.2 1.9-5.6 1.9z"/>
+          </svg>
+          Nuestra lista de regalos
+        </a>
+        <span class="nota">Se abre Amazon en una pestaña nueva.</span>
+      </div>
+    </section>
+
+    <div id="bloque-confirmar" hidden>
+      <svg class="separador" aria-hidden="true"><use href="#adorno"/></svg>
+      <section class="seccion revelar" aria-labelledby="t-confirmar">
+        <h2 id="t-confirmar" class="titulo-seccion">Confirma tu asistencia</h2>
+        <p class="texto-seccion cursiva">Nos ayudará mucho a prepararlo todo con cariño.</p>
+        <div class="acciones">
+          <a id="confirmar" class="boton" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#e3c98f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20l1.2-4.2A8.5 8.5 0 1 1 20.5 11.5z"/></svg>
+            Confirmar por WhatsApp
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <svg class="separador" aria-hidden="true"><use href="#adorno"/></svg>
+
+    <section class="seccion revelar cierre" aria-label="Despedida">
+      <svg class="ilustracion" viewBox="0 0 200 270" style="width:min(46%,180px)" aria-hidden="true">
+        <g filter="url(#acuarela)">
+          <path d="M66 98C70 140 120 160 150 198M128 92c2 48 16 80 22 106M100 126c4 32 34 50 50 72" fill="none" stroke="#9a774f" stroke-opacity=".55" stroke-width="1"/>
+          <ellipse cx="66" cy="60" rx="30" ry="37" fill="url(#azul-acuarela)" stroke="#7f98b1" stroke-opacity=".55"/>
+          <path d="M62 98l4-5 4 5Z" fill="#93abc2"/>
+          <ellipse cx="128" cy="52" rx="31" ry="38" fill="url(#marfil-acuarela)" stroke="#b9975c" stroke-opacity=".6"/>
+          <path d="M124 91l4-5 4 5Z" fill="#d8c299"/>
+          <ellipse cx="100" cy="92" rx="27" ry="33" fill="url(#azul-acuarela)" stroke="#7f98b1" stroke-opacity=".55" opacity=".92"/>
+          <path d="M96 126l4-5 4 5Z" fill="#93abc2"/>
+          <g fill="#fff" opacity=".7"><ellipse cx="55" cy="44" rx="6" ry="10" transform="rotate(25 55 44)"/><ellipse cx="117" cy="36" rx="6" ry="10" transform="rotate(25 117 36)"/><ellipse cx="90" cy="78" rx="5" ry="9" transform="rotate(25 90 78)"/></g>
+          <g stroke="#9a774f" stroke-opacity=".55" stroke-width="1.2">
+            <ellipse cx="100" cy="222" rx="44" ry="40" fill="url(#pelo)"/>
+            <ellipse cx="100" cy="230" rx="25" ry="23" fill="url(#hocico)" stroke-opacity=".25"/>
+            <ellipse cx="62" cy="214" rx="12" ry="20" transform="rotate(22 62 214)" fill="url(#pelo)"/>
+            <ellipse cx="70" cy="254" rx="21" ry="14" fill="url(#pelo)"/>
+            <ellipse cx="130" cy="254" rx="21" ry="14" fill="url(#pelo)"/>
+          </g>
+          <ellipse cx="70" cy="255" rx="10" ry="7" fill="#f2dcc2"/>
+          <ellipse cx="130" cy="255" rx="10" ry="7" fill="#f2dcc2"/>
+          <use href="#cara-oso" x="42" y="116" width="116" height="108"/>
+          <ellipse cx="150" cy="201" rx="12" ry="15" transform="rotate(-25 150 201)" fill="url(#pelo)" stroke="#9a774f" stroke-opacity=".55" stroke-width="1.2"/>
+        </g>
+        <g fill="#c6a464"><use href="#destello" x="20" y="120" width="10" height="10"/><use href="#destello" x="170" y="110" width="12" height="12"/><use href="#destello" x="168" y="18" width="8" height="8"/></g>
+      </svg>
+      <p class="firma oro-texto">Kael</p>
       <button class="repetir" type="button">Volver a abrir el sobre</button>
     </section>
+
   </div>
-</main>
+</div>
+
+<button class="musica" type="button" aria-pressed="false" aria-label="Música">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>
+  <span class="ondas" aria-hidden="true"><i></i><i></i><i></i></span>
+</button>
 
 <script>
 (() => {
@@ -679,16 +1051,147 @@ body.cargando .escena { visibility: hidden; }
   const $ = s => d.querySelector(s);
   const $$ = s => [...d.querySelectorAll(s)];
   const reducido = matchMedia('(prefers-reduced-motion: reduce)');
-  const CLAVE = 'kael-invitacion-abierta';
+  const CLAVE = 'kael-invitacion-abierta-v2';
   const SUAVE = 'cubic-bezier(.45,.05,.25,1)';
+  const INICIO = Date.UTC(2026, 10, 7, 17, 0, 0); // sábado 7/11/2026, 18:00 h en España
 
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+  // ----- Enlaces configurables -----
   $('#lista-regalos').href = ENLACE_LISTA_DE_REGALOS;
+  if (ENLACE_UBICACION.trim()) {
+    $('#como-llegar').href = ENLACE_UBICACION.trim();
+    $('#bloque-ubicacion').hidden = false;
+  }
+  const telefono = TELEFONO_CONFIRMACION.replace(/\D/g, '');
+  if (telefono) {
+    $('#confirmar').href = 'https://wa.me/' + telefono + '?text=' + encodeURIComponent('¡Hola! Confirmo mi asistencia al baby shower de Kael.');
+    $('#bloque-confirmar').hidden = false;
+  }
+  if (/Android/i.test(navigator.userAgent)) {
+    const g = $('#guardar-calendario');
+    g.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Baby Shower de Kael') +
+      '&dates=20261107T180000/20261107T180000&ctz=Europe/Madrid&location=' + encodeURIComponent('Carrer de la Mare de Déu de Montserrat');
+    g.target = '_blank'; g.rel = 'noopener noreferrer';
+  }
 
   const recordar = v => { try { v ? localStorage.setItem(CLAVE, '1') : localStorage.removeItem(CLAVE); } catch (e) {} };
   const recordada = () => { try { return localStorage.getItem(CLAVE) === '1'; } catch (e) { return false; } };
   const pausa = ms => new Promise(r => setTimeout(r, ms));
+
+  // ----- Caja de música: la nana de Brahms, creada por el navegador -----
+  const musica = (() => {
+    const boton = $('.musica');
+    const F = { C: 523.25, D: 587.33, E: 659.25, F: 698.46, G: 783.99, A: 880, B: 987.77, C2: 1046.5 };
+    const MELODIA = [['E', .5], ['E', .5], ['G', 1.5], ['E', .5], ['E', 1], ['G', 2], ['E', .5], ['G', .5], ['C2', 1], ['B', 1.5], ['A', .5], ['A', 1], ['G', 2],
+      ['D', .5], ['E', .5], ['F', 1], ['D', 1], ['D', .5], ['E', .5], ['F', 2], ['D', .5], ['F', .5], ['B', .5], ['A', .5], ['G', 1], ['B', 1], ['C2', 2],
+      ['C', .5], ['C', .5], ['C2', 2], ['A', .5], ['F', .5], ['G', 2], ['E', .5], ['C', .5], ['F', 1], ['G', 1], ['A', 1], ['G', 2],
+      ['C', .5], ['C', .5], ['C2', 2], ['A', .5], ['F', .5], ['G', 2], ['E', .5], ['C', .5], ['F', 1], ['E', 1], ['D', 1], ['C', 3]];
+    const NEGRA = .52;
+    let ctx = null, salida = null, reloj = null, siguiente = 0, i = 0, sonando = false, apagadaAMano = false, pausadaPorOcultar = false;
+
+    function preparar() {
+      if (ctx) return true;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      ctx = new AC();
+      salida = ctx.createGain(); salida.gain.value = 0;
+      const eco = ctx.createConvolver();
+      const n = Math.floor(ctx.sampleRate * 2.6), b = ctx.createBuffer(2, n, ctx.sampleRate);
+      for (let c = 0; c < 2; c++) { const x = b.getChannelData(c); for (let k = 0; k < n; k++) x[k] = (Math.random() * 2 - 1) * Math.pow(1 - k / n, 3); }
+      eco.buffer = b;
+      const seco = ctx.createGain(); seco.gain.value = .8;
+      const mojado = ctx.createGain(); mojado.gain.value = .4;
+      salida.connect(seco).connect(ctx.destination);
+      salida.connect(eco).connect(mojado).connect(ctx.destination);
+      return true;
+    }
+    function nota(f, t, dur) {
+      const g = ctx.createGain(), fin = t + Math.max(1.4, dur * 1.8);
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(.3, t + .006);
+      g.gain.exponentialRampToValueAtTime(.0006, fin);
+      g.connect(salida);
+      [[1, 1], [2, .26], [3, .07], [4.16, .05]].forEach(([m, a]) => {
+        const o = ctx.createOscillator(), ga = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = f * m; ga.gain.value = a;
+        o.connect(ga).connect(g); o.start(t); o.stop(fin + .05);
+      });
+    }
+    function programar() {
+      while (siguiente < ctx.currentTime + .45) {
+        if (i >= MELODIA.length) { i = 0; siguiente += NEGRA * 3; continue; }
+        const [n, dur] = MELODIA[i++];
+        nota(F[n], siguiente, dur * NEGRA);
+        siguiente += dur * NEGRA;
+      }
+    }
+    function pintar() { boton.setAttribute('aria-pressed', String(sonando)); boton.setAttribute('aria-label', sonando ? 'Pausar la música' : 'Poner música'); }
+    function sonar() {
+      if (!preparar()) return;
+      if (ctx.state !== 'running') ctx.resume();
+      if (sonando) return;
+      sonando = true;
+      siguiente = Math.max(siguiente, ctx.currentTime + .1);
+      programar();
+      reloj = setInterval(programar, 120);
+      salida.gain.cancelScheduledValues(ctx.currentTime);
+      salida.gain.setTargetAtTime(.42, ctx.currentTime, .5);
+      pintar();
+    }
+    function parar() {
+      if (!sonando) return;
+      sonando = false;
+      clearInterval(reloj);
+      salida.gain.cancelScheduledValues(ctx.currentTime);
+      salida.gain.setTargetAtTime(0, ctx.currentTime, .12);
+      setTimeout(() => { if (!sonando && ctx.state === 'running') ctx.suspend(); }, 700);
+      pintar();
+    }
+    boton.addEventListener('click', () => {
+      if (sonando) { apagadaAMano = true; parar(); } else { apagadaAMano = false; sonar(); }
+    });
+    d.addEventListener('visibilitychange', () => {
+      if (d.hidden && sonando) { pausadaPorOcultar = true; parar(); }
+      else if (!d.hidden && pausadaPorOcultar) { pausadaPorOcultar = false; sonar(); }
+    });
+    return { alAbrir() { if (!apagadaAMano) sonar(); } };
+  })();
+
+  // ----- Cuenta regresiva -----
+  let cuentaIniciada = false;
+  function iniciarCuenta() {
+    if (cuentaIniciada) return;
+    cuentaIniciada = true;
+    const dos = n => String(n).padStart(2, '0');
+    const pintar = () => {
+      const falta = INICIO - Date.now();
+      if (falta <= 0) {
+        $('.cuenta').hidden = true; $('#faltan').hidden = true; $('.gran-dia').hidden = false;
+        return false;
+      }
+      const s = Math.floor(falta / 1000);
+      $('#c-dias').textContent = dos(Math.floor(s / 86400));
+      $('#c-horas').textContent = dos(Math.floor(s % 86400 / 3600));
+      $('#c-min').textContent = dos(Math.floor(s % 3600 / 60));
+      $('#c-seg').textContent = dos(s % 60);
+      return true;
+    };
+    if (pintar()) { const t = setInterval(() => { if (!pintar()) clearInterval(t); }, 1000); }
+  }
+
+  // ----- Las secciones aparecen al bajar -----
+  function prepararSecciones() {
+    iniciarCuenta();
+    const bloques = $$('.revelar');
+    if (reducido.matches || !('IntersectionObserver' in window)) { bloques.forEach(b => b.classList.add('visible')); }
+    else {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: .15 });
+      bloques.forEach(b => io.observe(b));
+    }
+    const mirar = () => { if (scrollY > 30) { body.classList.add('ya-bajo'); removeEventListener('scroll', mirar); } };
+    addEventListener('scroll', mirar, { passive: true });
+  }
 
   const mesa = $('.mesa'), flota = $('.flota'), tarjeta = $('.tarjeta');
   let estado = 'cargando', flotacion = null;
@@ -705,6 +1208,7 @@ body.cargando .escena { visibility: hidden; }
     if (recordada()) {
       body.classList.add('abierta');
       estado = 'abierta';
+      prepararSecciones();
       if (!reducido.matches) mesa.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 900, easing: SUAVE });
       return;
     }
@@ -720,14 +1224,18 @@ body.cargando .escena { visibility: hidden; }
     if (estado !== 'cerrada') return;
     estado = 'abriendo';
     body.classList.add('abriendo');
+    musica.alAbrir();
     if (reducido.matches) return abrirSinMovimiento();
 
-    // El sobre deja de flotar y se asienta
+    // El sobre deja de flotar; el osito se esconde y la portada se desvanece
     if (flotacion) {
       const ahora = getComputedStyle(flota).transform;
       flotacion.cancel();
       animar(flota, [{ transform: ahora === 'none' ? 'translateY(0)' : ahora }, { transform: 'translateY(0)' }], { duration: 350 });
     }
+    animar($('.oso'), [{ transform: 'none', opacity: 1 }, { transform: 'translateY(42%)', opacity: 0 }], { duration: 650, easing: 'cubic-bezier(.5,0,.75,0)' });
+    animar($('.portada-titulo'), [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-10px)' }], { duration: 700 });
+    animar($('.arco'), [{ opacity: 1 }, { opacity: 0 }], { duration: 1100, delay: 200 });
 
     // 1. El sello se suelta y la cinta se desliza hacia los lados
     animar($('.sello'), [
@@ -750,8 +1258,10 @@ body.cargando .escena { visibility: hidden; }
     await pausa(giro.duration / 2 + 180);
 
     // 3. La tarjeta sale del sobre: la tarjeta sube y el sobre baja
-    const h = tarjeta.offsetHeight, eh = $('.sobre-fondo').offsetHeight;
-    const y0 = -h / 4, subida = h * .26, bajada = eh * .66;
+    const fondo = $('.sobre-fondo');
+    const h = tarjeta.offsetHeight, eh = fondo.offsetHeight;
+    const y0 = fondo.offsetTop + eh / 2 - h * .75, centro = -h / 4;
+    const subida = h * .26, bajada = eh * .66;
     const piezas = $$('.sombra-sobre, .sobre-fondo, .bolsillo, .solapa');
     const sacar = { duration: 2000, easing: 'cubic-bezier(.42,0,.22,1)' };
     animar(tarjeta, [{ transform: `translateY(${y0}px)` }, { transform: `translateY(${y0 - subida}px)` }], sacar);
@@ -759,26 +1269,26 @@ body.cargando .escena { visibility: hidden; }
     piezas.forEach(p => animar(p, [{ transform: 'translateY(0)' }, { transform: `translateY(${bajada}px)` }], sacar));
     await pausa(sacar.duration);
 
-    // 4. El sobre se retira y la tarjeta vuelve al centro
+    // 4. El sobre se retira y la tarjeta se coloca en el centro
     const retirar = { duration: 950, easing: 'cubic-bezier(.5,0,.75,0)' };
     piezas.forEach(p => animar(p, [
       { transform: `translateY(${bajada}px)`, opacity: 1 },
       { transform: `translateY(${bajada + eh * .5}px)`, opacity: 0 }
     ], retirar));
     const centrar = { duration: 1150, delay: 120 };
-    animar(tarjeta, [{ transform: `translateY(${y0 - subida}px)` }, { transform: `translateY(${y0}px)` }], centrar);
+    animar(tarjeta, [{ transform: `translateY(${y0 - subida}px)` }, { transform: `translateY(${centro}px)` }], centrar);
     await pausa(centrar.duration + centrar.delay + 150);
 
     // 5. La tarjeta se despliega
     const desplegar = { duration: 1700, easing: 'cubic-bezier(.5,.05,.2,1)' };
     animar($('.panel-superior'), [{ transform: 'rotateX(-180deg)' }, { transform: 'rotateX(0deg)' }], desplegar);
-    animar(tarjeta, [{ transform: `translateY(${y0}px)` }, { transform: 'translateY(0)' }], desplegar);
+    animar(tarjeta, [{ transform: `translateY(${centro}px)` }, { transform: 'translateY(0)' }], desplegar);
     animar($('.tarjeta-sombra'), [
       { opacity: .6, transform: 'scaleY(.5)' },
       { opacity: .55, transform: 'scaleY(.5)', offset: .5 },
       { opacity: .5, transform: 'scaleY(1)' }
     ], desplegar);
-    animar($('.cara-portada .sombra-cara'), [{ opacity: 0 }, { opacity: .4 }], { duration: desplegar.duration * .42, easing: 'ease-in' });
+    animar($('.cara-portada .sombra-cara'), [{ opacity: 0 }, { opacity: .25 }], { duration: desplegar.duration * .42, easing: 'ease-in' });
     animar($('.cara-interior .sombra-cara'), [{ opacity: .42 }, { opacity: .42, offset: .3 }, { opacity: 0 }], desplegar);
     animar($('.sombra-pliegue'), [{ opacity: 0 }, { opacity: .32, offset: .45 }, { opacity: 0 }], desplegar);
     await pausa(desplegar.duration + 60);
@@ -787,7 +1297,7 @@ body.cargando .escena { visibility: hidden; }
   }
 
   async function abrirSinMovimiento() {
-    $$('.sombra-sobre, .sobre-fondo, .bolsillo, .solapa, .cinta, .sello, .tarjeta').forEach(p =>
+    $$('.sombra-sobre, .sobre-fondo, .bolsillo, .solapa, .cinta, .sello, .tarjeta, .arco, .portada-titulo, .oso').forEach(p =>
       animar(p, [{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: 'linear' }));
     await pausa(320);
     terminar();
@@ -801,8 +1311,9 @@ body.cargando .escena { visibility: hidden; }
     $('.solapa').style.zIndex = '';
     estado = 'abierta';
     recordar(true);
+    prepararSecciones();
     if (!reducido.matches) {
-      $('.regalos').animate([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: 250, easing: SUAVE, fill: 'backwards' });
+      $('.desliza').animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, delay: 600, easing: SUAVE, fill: 'backwards' });
       $('.nombre').animate([{ backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0' }, { backgroundPosition: '50% 0' }], { duration: 2600, delay: 150, easing: 'ease-in-out' });
     }
     tarjeta.focus({ preventScroll: true });
