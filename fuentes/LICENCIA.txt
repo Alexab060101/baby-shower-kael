@@ -1,0 +1,7 @@
+Tipografías incluidas en esta carpeta (descargadas de Google Fonts, juego de caracteres latino):
+
+- Cormorant Garamond (normal e itálica) — Copyright 2015 The Cormorant Project Authors.
+- Pinyon Script — Copyright 2012 Nicole Fally.
+
+Ambas se distribuyen con la licencia SIL Open Font License 1.1:
+https://openfontlicense.org
